@@ -1,0 +1,2 @@
+# DIM-SLAM
+This is official repo for ICLR 2023 Paper "DENSE RGB SLAM WITH NEURAL IMPLICIT MAPS"
