@@ -12,7 +12,7 @@ If you find our code or paper useful, please cite:
 @inproceedings{li2023dense,
   author    = {Li, Heng and Gu, Xiaodong and Yuan, Weihao and Yang, Luwei and Dong, Zilong and Tan, Ping},
   title     = {Dense RGB SLAM With Neural Implicit Maps},
-  booktitle={International Conference on Learning Representations},
+  booktitle={Proceedings of the International Conference on Learning Representations},
   year      = {2023},
   url={https://openreview.net/forum?id=QUK1ExlbbA}
 }
