@@ -5,7 +5,7 @@ Heng Li, Xiaodong Gu, Weihao Yuan, Luwei Yang, Zilong Dong, Ping Tan
 [paper](https://openreview.net/pdf?id=QUK1ExlbbA), [openreview](https://openreview.net/forum?id=QUK1ExlbbA), [Project](https://poptree.github.io/DIM-SLAM/)
 
 
-The code will release soon.
+The core code will be made public NO LATER than May.
 
 If you find our code or paper useful, please cite:
 ```
