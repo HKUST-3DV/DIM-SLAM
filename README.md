@@ -1,5 +1,8 @@
 # DIM-SLAM
-This is official repo for ICLR 2023 Paper "DENSE RGB SLAM WITH NEURAL IMPLICIT MAPS"
+This is official repo of **DIM-SLAM** for ICLR 2023 Paper:
+
+ *"DENSE RGB SLAM WITH NEURAL IMPLICIT MAPS"*
+
 Heng Li, Xiaodong Gu, Weihao Yuan, Luwei Yang, Zilong Dong, Ping Tan
 
 [paper](https://openreview.net/pdf?id=QUK1ExlbbA), [openreview](https://openreview.net/forum?id=QUK1ExlbbA), [Project](https://poptree.github.io/DIM-SLAM/)
