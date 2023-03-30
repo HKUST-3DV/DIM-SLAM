@@ -15,7 +15,7 @@ A: You could find the video demo on the openreview. You could find the most deta
 
 2. Q: Why the poses of first two frames are GT pose?
 
-A: To fix the scale on world coordinate, otherwise the size of the grid is meaningless. If the first, the estimated pose will up to a scale.
+A: To fix the scale on world coordinate, otherwise the size of the grid is meaningless. If we do not do so, the estimated pose will up to a scale.
 
 3. Q: Does the SfM part works on LLFF?
 
