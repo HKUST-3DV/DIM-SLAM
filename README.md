@@ -19,7 +19,7 @@ The core part of sfm is released. The whole framework will be made public soom.
 
 3. Q: Does the SfM part of your framework work with the LLFF dataset?
 
-    A: Yes, our framework works with the LLFF dataset. As shown in Figure 1 of our paper, the orange and purple lines represent the BARF and our method's loss on the LLFF:Horns dataset. Our method converges much faster than BARF and achieves comparable results with the recent state-of-the-art methods as of March 2023.
+    A: Yes, our framework works with the LLFF dataset. As shown in Figure 1, the orange and purple lines represent the BARF and our method's loss on the LLFF:Horns dataset. Our method converges much faster than BARF and achieves comparable results with the recent state-of-the-art methods as of March 2023.
 
 ![Fig1: LLFF:Horns, Ours compares with BARF](./figs/20230330193005.png)
 
