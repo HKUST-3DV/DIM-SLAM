@@ -9,10 +9,16 @@ The core part of sfm is released. The whole framework will be made public soom.
 
 # Commom Q&A
 
-1. Q: Why the poses of first two frames are GT pose?
+1. Q: Where is the video demo?
+
+A: You could find the video demo on the openreview. You could find the most detail of our framework on the paper and the openreview.
+
+2. Q: Why the poses of first two frames are GT pose?
+
 A: To fix the scale on world coordinate, otherwise the size of the grid is meaningless. If the first, the estimated pose will up to a scale.
 
-2. Q: Does the SfM part works on LLFF?
+3. Q: Does the SfM part works on LLFF?
+
 A: Yes. As shown in Fig 1, the orange/purple line are the loss of BARF/ours on LLFF:Horns, ours method converage much faster than BARF. Our method also has comparable result with recent SOTA methods till Mar. 2023. 
 
 ![Fig1: LLFF:Horns, Ours compares with BARF](./figs/20230330193005.png)
