@@ -9,17 +9,17 @@ The core part of sfm is released. The whole framework will be made public soom.
 
 # Commom Q&A
 
-1. Q: Where is the video demo?
-    
-    A: You could find the video demo on the openreview. You could find the most detail of our framework on the paper and the openreview.
+1. Q: Where can I find the video demo for your framework?
 
-2. Q: Why the poses of first two frames are GT pose?
+    A: The video demo can be found on the OpenReview website. For more detailed information about our framework, please refer to our paper and the OpenReview page.
 
-    A: To fix the scale on world coordinate, otherwise the size of the grid is meaningless. If we do not do so, the estimated pose will up to a scale.
+2. Q: Why are the poses of the first two frames in the ground truth pose?
 
-3. Q: Does the SfM part works on LLFF?
+    A: The ground truth poses are used to fix the scale in the world coordinate system. Without doing so, the size of the grid would be meaningless. If we did not use the ground truth poses, the estimated pose would only be up to a scale.
 
-    A: Yes. As shown in Fig 1, the orange/purple line are the loss of BARF/ours on LLFF:Horns, ours method converage much faster than BARF. Our method also has comparable result with recent SOTA methods till Mar. 2023. 
+3. Q: Does the SfM part of your framework work with the LLFF dataset?
+
+    A: Yes, our framework works with the LLFF dataset. As shown in Figure 1 of our paper, the orange and purple lines represent the BARF and our method's loss on the LLFF:Horns dataset. Our method converges much faster than BARF and achieves comparable results with the recent state-of-the-art methods as of March 2023.
 
 ![Fig1: LLFF:Horns, Ours compares with BARF](./figs/20230330193005.png)
 
