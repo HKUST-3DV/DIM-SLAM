@@ -1,0 +1,10 @@
+inherit_from: configs/replica.yaml
+
+output: ./output/replica/office0
+
+dataset:
+  scene: office0
+  input_folder: data/Replica/office0
+
+nerf:
+  bound: [[-5.5,5.9],[-6.7,5.4],[-4.7,5.3]]

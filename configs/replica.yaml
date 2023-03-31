@@ -1,0 +1,65 @@
+exp_name: base
+exp_tag: base
+output: ./output
+scale: 1.0
+device: cuda:0
+
+rerun: False
+
+color_cam:
+  H: 680
+  W: 1200
+  fx: 600.0
+  fy: 600.0
+  cx: 599.5
+  cy: 339.5
+  crop_edge:
+  crop_size:
+  distortion:
+  transform:
+
+depth_cam:
+  H: 680
+  W: 1200
+  fx: 600.0
+  fy: 600.0
+  cx: 599.5
+  cy: 339.5
+  crop_edge:
+  crop_size:
+  transform:
+
+dataset:
+  name: replica
+  scene: 
+  input_folder:
+  ds_start: 0
+  ds_interval: 1
+  depth_scale: 6553.5
+
+nerf:
+  bound: 
+  grids_lens: 
+  grids_dim:
+
+  decoder: basic_MLP
+  hidden_dim: 32
+  n_blocks: 3
+  skips: [2]
+
+
+
+sfm: 
+  pixels: 3000
+  n_views: 15
+
+  lr:
+    grid_0: 0.001
+    grid_1: 0.0008
+    grid_2: 0.0007
+    grid_3: 0.0005
+    grid_4: 0.0004
+    grid_5: 0.0003
+    grid_6: 0.0002
+    BA_cam: 0.001
+    decoder: 0.0001
