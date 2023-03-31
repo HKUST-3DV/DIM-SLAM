@@ -13,9 +13,9 @@ The core part of sfm is released. The whole framework will be made public soom.
 
 # Implementation Detail
 
-To ensure reproducibility, we have re-implemented the core part of the code based on the details provided in our paper. In the current version, DIM-SLAM includes the initialization part mentioned in the paper, and you can easily extend it to the whole sequence by adding the keyframe graph management mechanism yourself.
+To ensure reproducibility, we have re-implemented the core part of the code based on the details provided in our paper. Most of the code is derived from NICE-SLAM. In the current version, DIM-SLAM includes the initialization part mentioned in the paper, and you can easily extend it to the whole sequence by adding the keyframe graph management mechanism yourself.
 
-The complete code for DIM-SLAM will be released soon. We would like to thank NICE-SLAM for providing the code for visualization.
+We are planning to release the complete code for DIM-SLAM soon. We would like to thank NICE-SLAM for providing the code for visualization.
 
 # Bugs
 
