@@ -64,7 +64,8 @@ class DIMSfM(nn.Module):
 
         for opt_iter in range(iters):
             for ii in range(len(self.model.grids_feat)):
-                optimizer.param_groups[int(ii)]["lr"] = ((self.args.sfm.lr["grid_%d"%int(ii)] * opt_iter + 0.5 *self.args.sfm.lr["grid_%d"%int(ii)]* (iters - opt_iter))/iters) if opt_iter >= 150 else self.args.sfm.lr["grid_%d"%int(ii)]
+                # optimizer.param_groups[int(ii)]["lr"] = ((self.args.sfm.lr["grid_%d"%int(ii)] * opt_iter + 0.5 *self.args.sfm.lr["grid_%d"%int(ii)]* (iters - opt_iter))/iters) if opt_iter >= 150 else self.args.sfm.lr["grid_%d"%int(ii)]
+                optimizer.param_groups[int(ii)]["lr"] = self.args.sfm.lr["grid_%d"%int(ii)] 
             optimizer.param_groups[-3]["lr"] = (
                 (
                     (
@@ -255,7 +256,9 @@ class DIMSfM(nn.Module):
             )
             mask = mask & (frame_indexs[None, :] != expand_indexs[:, None])
             mask[mask.sum(dim=1) < 4] = False
-
+            pixel_weight = [50 if x in fix_cam else 1  for x in expand_indexs]
+            frame_weight = [50 if x in fix_cam else 1  for x in frame_indexs]
+            fix_cam_weight = torch.tensor(frame_weight)[None, :].float().to(self.device) * torch.tensor(pixel_weight)[:,None].float().to(self.device)
             windows_reproj_idx = uv.permute(2, 1, 0, 3)  # Cn, pn,sz*sz,, 2
             windows_reproj_idx[..., 0] = windows_reproj_idx[..., 0] / W * 2.0 - 1.0
             windows_reproj_idx[..., 1] = windows_reproj_idx[..., 1] / H * 2.0 - 1.0
@@ -271,7 +274,7 @@ class DIMSfM(nn.Module):
 
             patch_loss += (
                 0.2
-                * (self.ssim_loss_5(tmp_windows_reproj_gt_color, tmp_batch_gt_color))[
+                * (self.ssim_loss_5(tmp_windows_reproj_gt_color, tmp_batch_gt_color)*fix_cam_weight)[
                     mask
                 ].sum()
             )
@@ -310,7 +313,7 @@ class DIMSfM(nn.Module):
 
             patch_loss += (
                 0.6
-                * (self.ssim_loss_3(tmp_reproj_gt_color, tmp_batch_patch_gt_color))[
+                * (self.ssim_loss_3(tmp_reproj_gt_color, tmp_batch_patch_gt_color)*fix_cam_weight)[
                     mask
                 ].sum()
             )
@@ -331,6 +334,7 @@ class DIMSfM(nn.Module):
             color_loss = torch.nn.functional.smooth_l1_loss(
                 batch_gt_color.flatten(), color.flatten(), beta=0.1, reduction="sum"
             )
+            loss += color_loss * 0.1 if opt_iter > 800 else 0.0
 
             if opt_iter % 55 == 0:
                 print(

@@ -64,7 +64,13 @@ class DIMSLAM(nn.Module):
             indexs.append(index)
             images.append(color_img)
             depths.append(depth_img)
-            start_poses.append(gt_pose if i <=1 else start_poses[-1].clone())
+            if i > 1:
+                delta_c2w = start_poses[i-1].clone() @ start_poses[i-2].clone().float().inverse()
+                now_pose = delta_c2w @ start_poses[i-1].clone()
+                now_pose[:3,3] = start_poses[i-1].clone()[:3,3]
+            else:
+                now_pose = gt_pose 
+            start_poses.append(now_pose.detach().clone())
             gt_poses.append(gt_pose)
         
         indexs = torch.tensor(indexs).long().to(self.device)
