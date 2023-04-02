@@ -19,6 +19,8 @@ We are planning to release the complete code for DIM-SLAM soon. We would like to
 
 # Bugs
 
+*2023.4.2 update:* We have temporarily solved the bug by adding a weight term, which has improved the convergence speed. However, this weight term was not included in our original implementation. I am currently working to identify the source of the misalignment.
+
 Regarding the issue of slower convergence of the initial depth and pose, we have found that it takes more iterations (~1500 iter) in the current implementation compared to our original implementation (~200 iter) to achieve convergence. We are working to find the misalignment and fix this issue.
 
 # Uasge
