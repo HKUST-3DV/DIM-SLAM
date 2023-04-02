@@ -19,7 +19,14 @@ We are planning to release the complete code for DIM-SLAM soon. We would like to
 
 # Bugs
 
-*2023.4.2 update:* We have temporarily solved the bug by adding a weight term, which has improved the convergence speed. However, this weight term was not included in our original implementation. I am currently working to identify the source of the misalignment.
+**2023.4.2 update:** We have temporarily solved the bug by adding a weight term, which has improved the convergence speed (~300 iters). However, this weight term was removed in our original implementation. I am still working to identify the source of the misalignment.
+
+The Depth and Pose at 700 iteration should be like the figures below:
+
+![Vis at 715](./figs/0715.jpg)
+
+![Pose](./figs/keyframe_ape.jpg)
+
 
 Regarding the issue of slower convergence of the initial depth and pose, we have found that it takes more iterations (~1500 iter) in the current implementation compared to our original implementation (~200 iter) to achieve convergence. We are working to find the misalignment and fix this issue.
 
