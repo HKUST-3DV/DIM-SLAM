@@ -65,12 +65,14 @@ class DIMSfM(nn.Module):
         for opt_iter in range(iters):
             for ii in range(len(self.model.grids_feat)):
                 # optimizer.param_groups[int(ii)]["lr"] = ((self.args.sfm.lr["grid_%d"%int(ii)] * opt_iter + 0.5 *self.args.sfm.lr["grid_%d"%int(ii)]* (iters - opt_iter))/iters) if opt_iter >= 150 else self.args.sfm.lr["grid_%d"%int(ii)]
-                optimizer.param_groups[int(ii)]["lr"] = self.args.sfm.lr["grid_%d"%int(ii)] 
+                optimizer.param_groups[int(ii)]["lr"] = self.args.sfm.lr[
+                    "grid_%d" % int(ii)
+                ]
             optimizer.param_groups[-3]["lr"] = (
                 (
                     (
                         self.args.sfm.lr.BA_cam / 2 * (iters - opt_iter)
-                        + self.args.sfm.lr.BA_cam  * (opt_iter)
+                        + self.args.sfm.lr.BA_cam * (opt_iter)
                     )
                     / iters
                 )
@@ -256,9 +258,11 @@ class DIMSfM(nn.Module):
             )
             mask = mask & (frame_indexs[None, :] != expand_indexs[:, None])
             mask[mask.sum(dim=1) < 4] = False
-            pixel_weight = [50 if x in fix_cam else 1  for x in expand_indexs]
-            frame_weight = [50 if x in fix_cam else 1  for x in frame_indexs]
-            fix_cam_weight = torch.tensor(frame_weight)[None, :].float().to(self.device) * torch.tensor(pixel_weight)[:,None].float().to(self.device)
+            pixel_weight = [50 if x in fix_cam else 1 for x in expand_indexs]
+            frame_weight = [50 if x in fix_cam else 1 for x in frame_indexs]
+            fix_cam_weight = torch.tensor(frame_weight)[None, :].float().to(
+                self.device
+            ) * torch.tensor(pixel_weight)[:, None].float().to(self.device)
             windows_reproj_idx = uv.permute(2, 1, 0, 3)  # Cn, pn,sz*sz,, 2
             windows_reproj_idx[..., 0] = windows_reproj_idx[..., 0] / W * 2.0 - 1.0
             windows_reproj_idx[..., 1] = windows_reproj_idx[..., 1] / H * 2.0 - 1.0
@@ -274,9 +278,10 @@ class DIMSfM(nn.Module):
 
             patch_loss += (
                 0.2
-                * (self.ssim_loss_5(tmp_windows_reproj_gt_color, tmp_batch_gt_color)*fix_cam_weight)[
-                    mask
-                ].sum()
+                * (
+                    self.ssim_loss_5(tmp_windows_reproj_gt_color, tmp_batch_gt_color)
+                    * fix_cam_weight
+                )[mask].sum()
             )
 
             tmp_reproj_gt_color = (
@@ -313,16 +318,30 @@ class DIMSfM(nn.Module):
 
             patch_loss += (
                 0.6
-                * (self.ssim_loss_3(tmp_reproj_gt_color, tmp_batch_patch_gt_color)*fix_cam_weight)[
-                    mask
-                ].sum()
+                * (
+                    self.ssim_loss_3(tmp_reproj_gt_color, tmp_batch_patch_gt_color)
+                    * fix_cam_weight
+                )[mask].sum()
             )
 
-            tmp_windows_reproj_gt_color = windows_reproj_gt_color[:,:,(self.patch_size*self.patch_size)//2,:]
-            tmp_batch_gt_color = batch_patch_gt_color.permute(1,0,2)[:,(self.patch_size*self.patch_size)//2,:]
-                
-            forward_reproj_loss = torch.nn.functional.smooth_l1_loss(tmp_windows_reproj_gt_color[mask],
-                        tmp_batch_gt_color.unsqueeze(1).repeat(1,cur_c2ws.shape[0],1)[mask], beta=0.1,reduction="sum") * 1.0
+            tmp_windows_reproj_gt_color = windows_reproj_gt_color[
+                :, :, (self.patch_size * self.patch_size) // 2, :
+            ]
+            tmp_batch_gt_color = batch_patch_gt_color.permute(1, 0, 2)[
+                :, (self.patch_size * self.patch_size) // 2, :
+            ]
+
+            forward_reproj_loss = (
+                torch.nn.functional.smooth_l1_loss(
+                    tmp_windows_reproj_gt_color[mask],
+                    tmp_batch_gt_color.unsqueeze(1).repeat(1, cur_c2ws.shape[0], 1)[
+                        mask
+                    ],
+                    beta=0.1,
+                    reduction="sum",
+                )
+                * 1.0
+            )
             loss += forward_reproj_loss * 0.1
 
             loss += (
@@ -373,39 +392,39 @@ class DIMSfM(nn.Module):
                 fig.tight_layout()
                 max_depth = np.max(gt_depth_np)
                 max_depth = 2 if max_depth == 0 else max_depth
-                axs[0, 0].imshow(gt_depth_np, cmap="plasma",
-                                 vmin=0, vmax=max_depth)
-                axs[0, 0].set_title('Input Depth')
+                axs[0, 0].imshow(gt_depth_np, cmap="plasma", vmin=0, vmax=max_depth)
+                axs[0, 0].set_title("Input Depth")
                 axs[0, 0].set_xticks([])
                 axs[0, 0].set_yticks([])
-                axs[0, 1].imshow(depth_np, cmap="plasma",
-                                 vmin=0, vmax=max_depth)
-                axs[0, 1].set_title('Generated Depth')
+                axs[0, 1].imshow(depth_np, cmap="plasma", vmin=0, vmax=max_depth)
+                axs[0, 1].set_title("Generated Depth")
                 axs[0, 1].set_xticks([])
                 axs[0, 1].set_yticks([])
-                axs[0, 2].imshow(depth_residual, cmap="plasma",
-                                 vmin=0, vmax=max_depth)
-                axs[0, 2].set_title('Depth Residual')
+                axs[0, 2].imshow(depth_residual, cmap="plasma", vmin=0, vmax=max_depth)
+                axs[0, 2].set_title("Depth Residual")
                 axs[0, 2].set_xticks([])
                 axs[0, 2].set_yticks([])
                 gt_color_np = np.clip(gt_color_np, 0, 1)
                 color_np = np.clip(color_np, 0, 1)
                 color_residual = np.clip(color_residual, 0, 1)
                 axs[1, 0].imshow(gt_color_np, cmap="plasma")
-                axs[1, 0].set_title('Input RGB')
+                axs[1, 0].set_title("Input RGB")
                 axs[1, 0].set_xticks([])
                 axs[1, 0].set_yticks([])
                 axs[1, 1].imshow(color_np, cmap="plasma")
-                axs[1, 1].set_title('Generated RGB')
+                axs[1, 1].set_title("Generated RGB")
                 axs[1, 1].set_xticks([])
                 axs[1, 1].set_yticks([])
                 axs[1, 2].imshow(color_residual, cmap="plasma")
-                axs[1, 2].set_title('RGB Residual')
+                axs[1, 2].set_title("RGB Residual")
                 axs[1, 2].set_xticks([])
                 axs[1, 2].set_yticks([])
                 plt.subplots_adjust(wspace=0, hspace=0)
                 plt.savefig(
-                    f'{self.args.output}/{opt_iter:04d}.jpg', bbox_inches='tight', pad_inches=0.2)
+                    f"{self.args.output}/{opt_iter:04d}.jpg",
+                    bbox_inches="tight",
+                    pad_inches=0.2,
+                )
                 plt.clf()
 
             loss.backward()

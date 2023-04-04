@@ -86,7 +86,9 @@ class BaseRenderer(object):
             far_bb = far_bb.unsqueeze(-1)
             far_bb += 0.01
 
-        far = torch.clamp(far_bb, torch.zeros_like(far_bb), torch.ones_like(far_bb).float() * 5)
+        far = torch.clamp(
+            far_bb, torch.zeros_like(far_bb), torch.ones_like(far_bb).float() * 5
+        )
 
         # this is the multi stage sampling
         sampling_stages = [32, 32, 32, 32]
@@ -119,20 +121,18 @@ class BaseRenderer(object):
                     pts = (
                         rays_o[..., None, :]
                         + rays_d[..., None, :] * z_vals[..., :, None]
-                    )  
+                    )
                     pointsf = pts.reshape(-1, 3)
 
                     raw, extra_ret = self.eval_points(pointsf, **kwargs)
                     raw = raw.reshape(N_rays, z_vals.shape[1], -1)
                     (
-                    depth,
-                    uncertainty,
-                    color,
-                    weights,
-                    density,
-                    ) = render_equation(
-                        raw, z_vals, rays_d,device
-                    )
+                        depth,
+                        uncertainty,
+                        color,
+                        weights,
+                        density,
+                    ) = render_equation(raw, z_vals, rays_d, device)
             else:
                 t_vals = torch.linspace(0.0, 1.0, steps=samples_num, device=device)
 
@@ -157,9 +157,7 @@ class BaseRenderer(object):
                     z_samples = z_samples.detach()
                     z_vals, _ = torch.sort(torch.cat([z_vals, z_samples], -1), -1)
 
-                pts = (
-                    rays_o[..., None, :] + rays_d[..., None, :] * z_vals[..., :, None]
-                )  
+                pts = rays_o[..., None, :] + rays_d[..., None, :] * z_vals[..., :, None]
                 pointsf = pts.reshape(-1, 3)
 
                 raw, extra_ret = self.eval_points(pointsf, **kwargs)
@@ -171,9 +169,7 @@ class BaseRenderer(object):
                     color,
                     weights,
                     density,
-                ) = render_equation(
-                    raw, z_vals, rays_d,device
-                )
+                ) = render_equation(raw, z_vals, rays_d, device)
 
         return depth, uncertainty, color, extra_ret, density
 
@@ -275,7 +271,8 @@ class BaseRenderer(object):
         raw, extra_ret = self.eval_points(pointsf)
         sigma = raw[:, -1]
         return sigma
-    
+
+
 def get_rays(H, W, fx, fy, cx, cy, c2w, device):
     """
     Get rays for a whole image.
@@ -345,9 +342,8 @@ def sample_pdf(bins, weights, N_samples, det=False, device="cuda:0"):
 
     return samples
 
-def render_equation(
-    raw, z_vals, rays_d, device="cuda:0"
-):
+
+def render_equation(raw, z_vals, rays_d, device="cuda:0"):
     dists = z_vals[..., 1:] - z_vals[..., :-1]
     dists = dists.float()
     dists = torch.cat(
@@ -374,7 +370,7 @@ def render_equation(
         )[:, :-1]
     )
     rgb = torch.sum(weights[..., None].detach() * rgb, -2)
-    depth = torch.sum(weights * z_vals, -1)  
-    tmp = z_vals - depth.unsqueeze(-1)  
-    depth_var = torch.sum(weights * tmp * tmp, dim=1)  
+    depth = torch.sum(weights * z_vals, -1)
+    tmp = z_vals - depth.unsqueeze(-1)
+    depth_var = torch.sum(weights * tmp * tmp, dim=1)
     return depth, depth_var, rgb, weights, alpha

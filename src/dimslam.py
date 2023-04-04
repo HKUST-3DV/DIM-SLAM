@@ -8,8 +8,8 @@ from src.dataset import replica
 
 from easydict import EasyDict as edict
 
-class DIMSLAM(nn.Module):
 
+class DIMSLAM(nn.Module):
     def __init__(self, args) -> None:
         super().__init__()
         self.args = args
@@ -21,7 +21,10 @@ class DIMSLAM(nn.Module):
         self.args.updated_color_cam.cx = self.args.color_cam.cx
         self.args.updated_color_cam.cy = self.args.color_cam.cy
         if self.args.color_cam.crop_size is not None:
-            sH, sW = self.args.color_cam.crop_size[0] // self.args.color_cam.H, self.args.color_cam.crop_size[1] // self.args.color_cam.W
+            sH, sW = (
+                self.args.color_cam.crop_size[0] // self.args.color_cam.H,
+                self.args.color_cam.crop_size[1] // self.args.color_cam.W,
+            )
             self.args.updated_color_cam.H = self.args.color_cam.crop_size[0]
             self.args.updated_color_cam.W = self.args.color_cam.crop_size[1]
             self.args.updated_color_cam.fx = self.args.color_cam.fx * sW
@@ -33,8 +36,6 @@ class DIMSLAM(nn.Module):
             self.args.updated_color_cam.W -= self.args.color_cam.crop_edge[1] * 2
             self.args.updated_color_cam.cx -= self.args.color_cam.crop_edge[1]
             self.args.updated_color_cam.cy -= self.args.color_cam.crop_edge[0]
-        
-
 
         self.model = NeRF(self.args)
         self.renderer = BaseRenderer(self.args, self.model)
@@ -46,14 +47,14 @@ class DIMSLAM(nn.Module):
         self.device = args.device
 
     def start(self):
-        
+
         self.init(15)
 
         for i in range(15, len(self.stream)):
             pass
 
     def init(self, init_num_frames=15):
-        
+
         indexs = []
         images = []
         depths = []
@@ -65,14 +66,17 @@ class DIMSLAM(nn.Module):
             images.append(color_img)
             depths.append(depth_img)
             if i > 1:
-                delta_c2w = start_poses[i-1].clone() @ start_poses[i-2].clone().float().inverse()
-                now_pose = delta_c2w @ start_poses[i-1].clone()
-                now_pose[:3,3] = start_poses[i-1].clone()[:3,3]
+                delta_c2w = (
+                    start_poses[i - 1].clone()
+                    @ start_poses[i - 2].clone().float().inverse()
+                )
+                now_pose = delta_c2w @ start_poses[i - 1].clone()
+                now_pose[:3, 3] = start_poses[i - 1].clone()[:3, 3]
             else:
-                now_pose = gt_pose 
+                now_pose = gt_pose
             start_poses.append(now_pose.detach().clone())
             gt_poses.append(gt_pose)
-        
+
         indexs = torch.tensor(indexs).long().to(self.device)
         images = torch.stack(images).to(self.device)
         depths = torch.stack(depths).to(self.device)
@@ -80,10 +84,9 @@ class DIMSLAM(nn.Module):
         gt_poses = torch.stack(gt_poses).to(self.device)
 
         self.sfm.ba(indexs, images, depths, start_poses, gt_poses)
-    
+
     def build_kf_graph(self):
         pass
 
     def select_kf_graph(self):
         pass
-
