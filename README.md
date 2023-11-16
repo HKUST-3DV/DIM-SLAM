@@ -18,7 +18,6 @@ On this branch, we have re-implemented the core part of the code based on the de
 
  We would like to thank NICE-SLAM for providing the code for visualization. We would like to thank Xunzhi ZHENG for providing the implementation of the system.
 
-# Bugs
 
 
 The Depth and Pose at 700 iteration should be like the figures below:
