@@ -8,7 +8,6 @@ Heng Li, Xiaodong Gu, Weihao Yuan, Luwei Yang, Zilong Dong, Ping Tan
 [paper](https://openreview.net/pdf?id=QUK1ExlbbA), [openreview](https://openreview.net/forum?id=QUK1ExlbbA), [Project](https://poptree.github.io/DIM-SLAM/)
 
 
-You can find the whole system implementation in "system" branch. This version of system is implemented by Xunzhi ZHENG@HKUST. 
 
 
 # Implementation Detail
