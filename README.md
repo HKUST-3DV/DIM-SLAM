@@ -8,18 +8,18 @@ Heng Li, Xiaodong Gu, Weihao Yuan, Luwei Yang, Zilong Dong, Ping Tan
 [paper](https://openreview.net/pdf?id=QUK1ExlbbA), [openreview](https://openreview.net/forum?id=QUK1ExlbbA), [Project](https://poptree.github.io/DIM-SLAM/)
 
 
-The core part of sfm is released. The whole framework will be made public soom.
+You can find the whole system implementation in "system" branch. This version of system is implemented by Xunzhi ZHENG@HKUST. 
 
 
 # Implementation Detail
+You can find the whole system implementation in "system" branch. This version of system is implemented by Xunzhi ZHENG@HKUST. 
 
-To ensure reproducibility, we have re-implemented the core part of the code based on the details provided in our paper. Most of the code is derived from NICE-SLAM. In the current version, DIM-SLAM includes the initialization part mentioned in the paper, and you can easily extend it to the whole sequence by adding the keyframe graph management mechanism yourself.
+On this branch, we have re-implemented the core part of the code based on the details provided in our paper. Most of the code is derived from NICE-SLAM. In the current version, DIM-SLAM includes the initialization part mentioned in the paper, and you can easily extend it to the whole sequence by adding the keyframe graph management mechanism yourself.
 
-We are planning to release the complete code for DIM-SLAM soon. We would like to thank NICE-SLAM for providing the code for visualization.
+ We would like to thank NICE-SLAM for providing the code for visualization. We would like to thank Xunzhi ZHENG for providing the implementation of the system.
 
 # Bugs
 
-**2023.4.2 update:** We have temporarily solved the bug by adding a weight term, which has improved the convergence speed (~300 iters). However, this weight term was removed in our original implementation. I am still working to identify the source of the misalignment.
 
 The Depth and Pose at 700 iteration should be like the figures below:
 
