@@ -11,15 +11,15 @@ Heng Li, Xiaodong Gu, Weihao Yuan, Luwei Yang, Zilong Dong, Ping Tan
 
 
 # Implementation Detail
-You can find the whole system implementation in "system" branch. This version of system is implemented by Xunzhi ZHENG@HKUST. 
+The system branch is withdrawn due to the bug. 
 
-On this branch, we have re-implemented the core part of the code based on the details provided in our paper. Most of the code is derived from NICE-SLAM. In the current version, DIM-SLAM includes the initialization part mentioned in the paper, and you can easily extend it to the whole sequence by adding the keyframe graph management mechanism yourself.
+In this branch, we have re-implemented the core part of the code based on the details provided in our paper. Most of the code is derived from NICE-SLAM. In the current version, DIM-SLAM includes the initialization part mentioned in the paper, and you can easily extend it to the whole sequence by adding the keyframe graph management mechanism yourself.
 
  We would like to thank NICE-SLAM for providing the code for visualization. We would like to thank Xunzhi ZHENG for providing the implementation of the system.
 
 
 
-The Depth and Pose at 700 iteration should be like the figures below:
+The Depth and Pose at 700 iterations should be like the figures below:
 
 ![Vis at 715](./figs/0715.jpg)
 
